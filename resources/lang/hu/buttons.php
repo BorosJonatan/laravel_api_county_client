@@ -10,4 +10,6 @@ return [
     'cancel' => 'Mégse',
     'cities' => 'Városok',
     'counties' => 'Megyék',
+    'login' => 'Bejelentkezés',
+    'logout' => 'Kijelentkezés'
 ];

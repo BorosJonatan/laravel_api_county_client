@@ -10,5 +10,7 @@ return [
     'cancel' => 'Cancel',
     'cities' => 'Cities',
     'counties' => 'Counties',
+    'login' => 'Login',
+    'logout' => 'Logout'
 ];
 

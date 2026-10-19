@@ -13,7 +13,7 @@
             <select id="county_id" name="county_id">
                 <option value="">Select a county</option>
                 @foreach ($counties as $county)
-                    <option value="{{ $county->county_id }}" @selected(old('county_id', $county->county_id) == $county->county_id)>
+                    <option value="{{ $county->id }}" @selected(old('county_id', $county->id) == $county->id)>
                         {{ $county->name }}
                     </option>
                 @endforeach

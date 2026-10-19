@@ -20,6 +20,7 @@ class CityController extends Controller
 
         return view('cities.index', [
             'cities' => $cities,
+            'isLogged' => !empty(session('api_token'))
         ]);
     }
 
@@ -33,15 +34,47 @@ class CityController extends Controller
         }
 
         $city = $this->getCity($response);
-
+        
         return view('cities.show', [
             'city' => $city,
         ]);
     }
 
+    public function edit($id)
+    {
+        $response = Http::api()
+            ->withToken(session('api_token'))
+            ->get("/cities/{$id}");
+
+        if ($response->failed()) {
+            return redirect()
+                ->route('cities.index')
+                ->with('error', 'A város nem található.');
+        }
+
+        $city = $this->getCity($response);
+
+        $countiesResponse = Http::api()->get('/counties');
+
+        if ($countiesResponse->failed()) {
+            return redirect()
+                ->route('cities.index')
+                ->with('error', 'Nem sikerült lekérni a megyéket.');
+        }
+
+        $counties = $this->getCounties($countiesResponse);
+
+        return view('cities.edit', [
+            'city' => $city,
+            'counties' => $counties,
+        ]);
+    }
+
     public function create()
     {
-        $response = Http::api()->get('/counties');
+        $response = Http::api()
+            ->withToken(session('api_token'))
+            ->get('/counties');
         if ($response->failed()) {
             return redirect()
                 ->route('cities.index')
@@ -54,7 +87,9 @@ class CityController extends Controller
 
     public function store(Request $request)
     {
-        $response = Http::api()->post('/cities', $request->all());
+        $response = Http::api()
+            ->withToken(session('api_token'))
+            ->post('/cities', $request->all());
 
         if ($response->failed()) {
             return back()->with('error', 'Nem sikerült létrehozni a várost.');
@@ -68,6 +103,7 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         $response = Http::api()
+            ->withToken(session('api_token'))   
             ->put("/cities/$id", $request->all());
 
         if ($response->failed()) {
@@ -82,6 +118,7 @@ class CityController extends Controller
     public function destroy($id)
     {
         $response = Http::api()
+            ->withToken(session('api_token'))
             ->delete("/cities/$id");
 
         if ($response->failed()) {

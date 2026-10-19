@@ -4,7 +4,9 @@
 
     <div class="actions">
         <h1>{{ __('cities.title')}}</h1>
-        <a class="button" href="{{ route('cities.create') }}">{{ __('buttons.add_new')}}</a>
+        @if ($isLogged)
+            <a class="button" href="{{ route('cities.create') }}">{{ __('buttons.add_new')}}</a>
+        @endif
     </div>
     <form method="GET" action="{{ route('cities.index') }}" style="margin-bottom: 20px">
         <input type="search" name="needle" value="{{ request('needle') }}">
@@ -28,13 +30,15 @@
             <td>{{ $city->zip_code }}</td>
             <td>{{ number_format($city->population, 0, '.', ' ') }}</td>
             <td class="actions">
-                <a class="button secondary" href="{{ route('cities.show', $city->id) }}">{{ __('buttons.view')}}</a>
-                <a class="button" href="{{ route('cities.edit', $city->id) }}">{{ __('buttons.edit')}}</a>
-                <form action="{{ route('cities.destroy', $city->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class='danger'>{{ __('buttons.delete')}}</button>
-                </form>
+                @if ($isLogged)
+                    <a class="button secondary" href="{{ route('cities.show', $city->id) }}">{{ __('buttons.view')}}</a>
+                    <a class="button" href="{{ route('cities.edit', $city->id) }}">{{ __('buttons.edit')}}</a>
+                    <form action="{{ route('cities.destroy', $city->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class='danger'>{{ __('buttons.delete')}}</button>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

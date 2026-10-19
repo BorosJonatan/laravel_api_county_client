@@ -13,6 +13,11 @@
             <ul>
                 <li><a href="{{ route('counties.index') }}">{{ __('buttons.counties')}}</a></li>
                 <li><a href="{{ route('cities.index') }}">{{ __('buttons.cities')}}</a></li>
+                @if (!session()->has('api_token'))
+                    <li><a href="{{ route('login') }}">{{ __('buttons.login')}}</a></li>
+                @else
+                    <li><a href="{{ route('logout') }}">{{ __('buttons.logout')}}</a></li>
+                @endif
             </ul>
         </nav>
     </header>

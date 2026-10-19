@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         session(['api_token' => $response->json('token')]);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('counties.index');
     }
 
     public function logout()
